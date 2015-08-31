@@ -6,7 +6,6 @@ module.exports = function(core) {
 		var timezone = -(new Date().getTimezoneOffset());
 		if (payload.timezone === timezone) {
 			return next();
-//			return;
 		}
 		payload.timezone = timezone;
 		next();

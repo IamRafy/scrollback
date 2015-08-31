@@ -1,18 +1,13 @@
 "use strict";
 var objUtils = require("../lib/obj-utils.js");
 
-module.exports = function(core, config, store) {
-	core.on("init-dn", function () {
-
-		var userObj = store.getUser();
-		userObj = userObj ? objUtils.clone(userObj) : {};
-
-		core.emit("init-user-up", userObj, function (err, payload) {
-//			if(err) return;
+module.exports = function(core) {
+	core.on("init-dn", function (init) {
+		core.emit("init-user-up", {}, function (err, payload) {
+			var userObj = objUtils.merge(init.user, payload);
 			if (Object.keys(payload).length === 0) return;
-
 			core.emit("user-up", {
-				user: payload,
+				user: userObj,
 				to: "me"
 			});
 		});
