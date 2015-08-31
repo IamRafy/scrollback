@@ -21,7 +21,11 @@ module.exports = function(core, config, store) {
 				user: user
 			}, function() {
 				self.removeClass("working");
-
+				$("<div>").html("Your account settings were successfully saved.").
+				alertbar({
+					type: "info",
+					timeout: 1500
+				});
 				core.emit("setstate", {
 					nav: {
 						dialog: null
@@ -30,17 +34,6 @@ module.exports = function(core, config, store) {
 			});
 		});
 	});
-
-	core.on("user-dn", function(user, next) {
-		if (!userUtils.isGuest(user.user.id) && !userUtils.isGuest(user.old.id)) {
-			$("<div>").html("Your account settings were successfully saved.").
-			alertbar({
-				type: "info",
-				timeout: 1500
-			});
-		}
-		next();
-	}, 500);
 
 	core.on("pref-dialog", function(dialog, next) {
 		var user = store.getUser();
